@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>  HM-1</title>
+  <style>
+    body{font-family:Arial;direction:rtl;margin:24px;background:#eef2f7;color:#0b1724}
+    .wrap{max-width:760px;margin:auto}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .box{background:#fff;padding:14px;border-radius:10px;box-shadow:0 8px 24px rgba(10,20,40,.06);width:100%}
+    .color{width:28px;height:28px;border-radius:6px;display:inline-block}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="box">
+      <h2>مولد ألوان</h2>
+      <input id="hex" placeholder="#33aaff أو 33aaff"/>
+      <button id="gen">اعرض</button>
+      <div id="swatches"></div>
+    </div>
+  </div>
+
+  <script>
+    function toHex(v){ return ('0'+(v|0).toString(16)).slice(-2); }
+    function rand(){ return Math.floor(Math.random()*256); }
+    document.getElementById('gen').onclick = ()=>{
+      const val = (document.getElementById('hex').value||'').replace('#','');
+      const sw = document.getElementById('swatches');
+      sw.innerHTML = '';
+      if(/^([0-9a-f]{6})$/i.test(val)){
+        const r = parseInt(val.slice(0,2),16), g=parseInt(val.slice(2,4),16), b=parseInt(val.slice(4,6),16);
+        for(let i=0;i<5;i++){
+          const d = `#${toHex(Math.max(0,Math.min(255,r + (i-2)*20)))}${toHex(Math.max(0,Math.min(255,g + (i-2)*10)))}${toHex(Math.max(0,Math.min(255,b + (i-2)*5)))}`;
+          const el = document.createElement('span');
+          el.className = 'color';
+          el.style.background = d;
+          el.title = d;
+          sw.appendChild(el);
+        }
+      } else {
+        for(let i=0;i<5;i++){
+          const c = `#${toHex(rand())}${toHex(rand())}${toHex(rand())}`;
+          const el = document.createElement('span');
+          el.className = 'color';
+          el.style.background = c;
+          el.title = c;
+          sw.appendChild(el);
+        }
+      }
+    };
+  </script>
+</body>
+</html>
